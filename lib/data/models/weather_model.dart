@@ -10,10 +10,11 @@ class WeatherModel {
       this.current, this.daily);
 
   WeatherModel.fromJson(Map<String, dynamic> json) {
-    lat = json['lat'];
-    lon = json['lon'];
-    timezone = json['timezone'];
-    timezoneOffset = json['timezone_offset'];
+    lat = json['lat'] == null ? 0.0 : json['lat'].toDouble();
+    lon = json['lon'] == null ? 0.0 : json['lon'].toDouble();
+    timezone = json['timezone'] == null ? "none" : json['timezone'];
+    timezoneOffset =
+        json['timezone_offset'] == null ? 0 : json['timezone_offset'].toInt();
     current = (json['current'] != null
         ? new Current.fromJson(json['current'])
         : null)!;
@@ -76,20 +77,22 @@ class Current {
       this.weather);
 
   Current.fromJson(Map<String, dynamic> json) {
-    dt = json['dt']!;
-    sunrise = json['sunrise']!;
-    sunset = json['sunset']!;
-    temp = json['temp']!;
-    feelsLike = json['feels_like']!;
-    pressure = json['pressure']!;
-    humidity = json['humidity']!;
-    dewPoint = json['dew_point']!;
-    uvi = json['uvi']!;
-    clouds = json['clouds']!;
-    visibility = json['visibility']!;
-    windSpeed = json['wind_speed']!;
-    windDeg = json['wind_deg']!;
-    windGust = json['wind_gust'] == null ? 0.0 : json['wind_gust'];
+    dt = json['dt'] == null ? 0 : json['dt'].toInt();
+    sunrise = json['sunrise'] == null ? 0 : json['sunrise'].toInt();
+    sunset = json['sunset'] == null ? 0 : json['sunset'].toInt();
+    temp = json['temp'] == null ? 0.0 : json['temp'].toDouble();
+    feelsLike =
+        json['feels_like'] == null ? 0.0 : json['feels_like'].toDouble();
+    pressure = json['pressure'] == null ? 0 : json['pressure'].toInt();
+    humidity = json['humidity'] == null ? 0 : json['humidity'].toInt();
+    dewPoint = json['dew_point'] == null ? 0.0 : json['dew_point'].toDouble();
+    uvi = json['uvi'] == null ? 0 : json['uvi'].toInt();
+    clouds = json['clouds'] == null ? 0 : json['clouds'].toInt();
+    visibility = json['visibility'] == null ? 0 : json['visibility'].toInt();
+    windSpeed =
+        json['wind_speed'] == null ? 0.0 : json['wind_speed'].toDouble();
+    windDeg = json['wind_deg'] == null ? 0 : json['wind_deg'].toInt();
+    windGust = json['wind_gust'] == null ? 0.0 : json['wind_gust'].toDouble();
     if (json['weather'] != null) {
       weather = [];
       json['weather'].forEach((v) {
@@ -130,7 +133,7 @@ class Weather {
   Weather(this.id, this.main, this.description, this.icon);
 
   Weather.fromJson(Map<String, dynamic> json) {
-    id = json['id'] == null ? 0 : json['id'];
+    id = json['id'] == null ? 0 : json['id'].toInt();
     main = json['main'] == null ? "none" : json['main'];
     description = json['description'] == null ? "none" : json['description'];
     icon = json['icon'] == null ? "none" : json['icon'];
@@ -189,24 +192,24 @@ class Daily {
       this.rain);
 
   Daily.fromJson(Map<String, dynamic> json) {
-    dt = json['dt'] == null ? 0 : json['dt'];
-    sunrise = json['sunrise'] == null ? 0 : json['sunrise'];
-    sunset = json['sunset'] == null ? 0 : json['sunset'];
-    moonrise = json['moonrise'] == null ? 0 : json['moonrise'];
-    moonset = json['moonset'] == null ? 0 : json['moonset'];
+    dt = json['dt'] == null ? 0 : json['dt'].toInt();
+    sunrise = json['sunrise'] == null ? 0 : json['sunrise'].toInt();
+    sunset = json['sunset'] == null ? 0 : json['sunset'].toInt();
+    moonrise = json['moonrise'] == null ? 0 : json['moonrise'].toInt();
+    moonset = json['moonset'] == null ? 0 : json['moonset'].toInt();
     moonPhase =
         json['moon_phase'] == null ? 0.0 : json['moon_phase'].toDouble();
     temp = (json['temp'] != null ? new Temp.fromJson(json['temp']) : null)!;
     feelsLike = (json['feels_like'] != null
         ? new FeelsLike.fromJson(json['feels_like'])
         : null)!;
-    pressure = json['pressure'] == null ? 0 : json['pressure'];
-    humidity = json['humidity'] == null ? 0 : json['humidity'];
+    pressure = json['pressure'] == null ? 0 : json['pressure'].toInt();
+    humidity = json['humidity'] == null ? 0 : json['humidity'].toInt();
     dewPoint = json['dew_point'] == null ? 0.0 : json['dt'].toDouble();
     windSpeed =
         json['wind_speed'] == null ? 0.0 : json['wind_speed'].toDouble();
-    windDeg = json['wind_deg'] == null ? 0 : json['wind_deg'];
-    windGust = json['wind_gust'] == null ? 0.0 : json['wind_gust'];
+    windDeg = json['wind_deg'] == null ? 0 : json['wind_deg'].toInt();
+    windGust = json['wind_gust'] == null ? 0.0 : json['wind_gust'].toDouble();
     if (json['weather'] != null) {
       weather = [];
       json['weather'].forEach((v) {
@@ -214,7 +217,7 @@ class Daily {
       });
     }
 
-    clouds = json['clouds'] == null ? 0 : json['clouds'];
+    clouds = json['clouds'] == null ? 0 : json['clouds'].toInt();
 
     pop = json['pop'] == null ? 0.0 : json['pop'].toDouble();
     uvi = json['uvi'] == null ? 0.0 : json['uvi'].toDouble();

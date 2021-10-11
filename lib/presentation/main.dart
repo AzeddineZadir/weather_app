@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:weather_app/buisness_logic/blocs/weather_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app/data/models/weather_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,21 +46,31 @@ class _WeatherAppState extends State<WeatherApp> {
           child: ListView(
             scrollDirection: Axis.vertical,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: TextField(
-                      controller: myController,
-                      decoration: InputDecoration(
-                        fillColor: Colors.lightBlue,
-                        border: OutlineInputBorder(),
-                        labelText: "Montpellier",
-                        prefixIcon: Icon(Icons.search),
+              Container(
+                color: Colors.white,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(
+                        height: 56,
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          child: TextField(
+                            controller: myController,
+                            decoration: InputDecoration(
+                              fillColor: Colors.lightBlue,
+                              border: OutlineInputBorder(),
+                              labelText: "city",
+                              prefixIcon: Icon(Icons.search),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
+                    Expanded(
+                        child: SizedBox(
+                      height: 40,
                       child: MaterialButton(
                           child: Text(
                             "Search",
@@ -70,8 +81,10 @@ class _WeatherAppState extends State<WeatherApp> {
                             weatherBloc
                                 .add(FeatchWeatherEvent(myController.text));
                             /* print(myController.text);*/
-                          })),
-                ],
+                          }),
+                    )),
+                  ],
+                ),
               ),
               BlocBuilder<WeatherBloc, WeatherState>(
                 builder: (context, state) {
@@ -83,12 +96,22 @@ class _WeatherAppState extends State<WeatherApp> {
                             children: [
                               Expanded(
                                 child: Container(
-                                  color: Colors.white10,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.white,
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                      color: Colors.lightBlue[200]),
                                   child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
                                         myController.text,
-                                        style: TextStyle(fontSize: 45),
+                                        style: TextStyle(
+                                          fontSize: 45,
+                                          color: Colors.black,
+                                        ),
                                       ),
                                       Text(
                                           DateFormat('EEEE').format(DateTime
@@ -102,6 +125,7 @@ class _WeatherAppState extends State<WeatherApp> {
                                                           1000)),
                                           style: TextStyle(
                                             fontSize: 25,
+                                            color: Colors.black,
                                           )),
                                     ],
                                   ),
@@ -111,7 +135,13 @@ class _WeatherAppState extends State<WeatherApp> {
                           ),
                           Container(
                             height: 340,
-                            color: Colors.green,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.white,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                color: Colors.lightBlue[200]),
                             child: Column(
                               children: [
                                 Expanded(
@@ -128,12 +158,18 @@ class _WeatherAppState extends State<WeatherApp> {
                                         state.weather.daily[0].temp.day
                                                 .toString() +
                                             " c°",
-                                        style: TextStyle(fontSize: 25)),
+                                        style: TextStyle(
+                                            fontSize: 35,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold)),
                                     Text(
                                         "   " +
                                             state.weather.daily[0].weather[0]
                                                 .main,
-                                        style: TextStyle(fontSize: 25)),
+                                        style: TextStyle(
+                                            fontSize: 35,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold)),
                                   ],
                                 )),
                                 Expanded(
@@ -144,7 +180,8 @@ class _WeatherAppState extends State<WeatherApp> {
                                         children: [
                                           Text(state.weather.current.windSpeed
                                               .toString()),
-                                          Icon(FontAwesomeIcons.wind)
+                                          Icon(FontAwesomeIcons.wind,
+                                              color: Colors.black)
                                         ],
                                       ),
                                       SizedBox(
@@ -176,179 +213,30 @@ class _WeatherAppState extends State<WeatherApp> {
                             ),
                           ),
                           Container(
-                            color: Colors.amber,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.teal,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: 16,
-                                          ),
-                                          Text(
-                                            DateFormat('EEEE').format(DateTime
-                                                .fromMillisecondsSinceEpoch(
-                                                    state.weather.daily[1].dt *
-                                                        1000)),
-                                            style: TextStyle(fontSize: 20),
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: getIcon(
-                                                    state.weather.daily[1]
-                                                        .weather[0].main,
-                                                    30),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text("" +
-                                                        state.weather.daily[1]
-                                                            .temp.min
-                                                            .toString()),
-                                                    Text("" +
-                                                        state.weather.daily[1]
-                                                            .temp.max
-                                                            .toString()),
-                                                    Text("" +
-                                                        state.weather.daily[1]
-                                                            .humidity
-                                                            .toString()),
-                                                    Text("" +
-                                                        state.weather.daily[1]
-                                                            .windSpeed
-                                                            .toString()),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                            color: Colors.white,
+                            height: 160,
+                            child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) =>
+                                    buildWeatherCard(state.weather, index),
+                                separatorBuilder: (context, _) => SizedBox(
+                                      width: 12,
                                     ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.teal,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: 16,
-                                          ),
-                                          Text(
-                                            DateFormat('EEEE').format(DateTime
-                                                .fromMillisecondsSinceEpoch(
-                                                    state.weather.daily[2].dt *
-                                                        1000)),
-                                            style: TextStyle(fontSize: 20),
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: getIcon(
-                                                    state.weather.daily[2]
-                                                        .weather[0].main,
-                                                    30),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text("71"),
-                                                    Text("71"),
-                                                    Text("71"),
-                                                    Text("71"),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.teal,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: 16,
-                                          ),
-                                          Text(
-                                            DateFormat('EEEE').format(DateTime
-                                                .fromMillisecondsSinceEpoch(
-                                                    state.weather.daily[3].dt *
-                                                        1000)),
-                                            style: TextStyle(fontSize: 20),
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: getIcon(
-                                                    state.weather.daily[3]
-                                                        .weather[0].main,
-                                                    30),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text("71"),
-                                                    Text("71"),
-                                                    Text("71"),
-                                                    Text("71"),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                                itemCount: 5),
                           ),
                         ],
                       ),
                     );
                   } else {
-                    return Text("");
+                    return Center(
+                      child: Container(
+                          color: Colors.white,
+                          height: 400,
+                          child: Text(
+                            " Search a city",
+                            style: TextStyle(fontSize: 50),
+                          )),
+                    );
                   }
                 },
               )
@@ -364,28 +252,98 @@ class _WeatherAppState extends State<WeatherApp> {
       case "Clear":
         return Icon(
           FontAwesomeIcons.sun,
-          color: Colors.black,
+          color: Colors.white,
           size: sz,
         );
       case "Clouds":
         return Icon(
           FontAwesomeIcons.cloud,
-          color: Colors.black,
+          color: Colors.white,
           size: sz,
         );
       case "Rain":
         return Icon(
           FontAwesomeIcons.cloudRain,
-          color: Colors.black,
+          color: Colors.white,
           size: sz,
         );
       case "Snow":
         return Icon(
           FontAwesomeIcons.snowman,
-          color: Colors.black,
+          color: Colors.white,
           size: sz,
         );
     }
     return Icon(Icons.add);
+  }
+
+  buildWeatherCard(WeatherModel weatherModel, int index) {
+    return Container(
+      width: 130,
+      decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.white,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          color: Colors.lightBlue[200]),
+      child: Expanded(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 16,
+            ),
+            Text(
+              DateFormat('EEEE').format(DateTime.fromMillisecondsSinceEpoch(
+                  weatherModel.daily[index].dt * 1000)),
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: getIcon(weatherModel.daily[index].weather[0].main, 30),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        "" + weatherModel.daily[index].temp.min.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        "" + weatherModel.daily[index].temp.max.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        "" + weatherModel.daily[index].humidity.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        "" + weatherModel.daily[index].windSpeed.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

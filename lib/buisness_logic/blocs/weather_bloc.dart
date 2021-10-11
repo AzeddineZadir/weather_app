@@ -23,6 +23,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
 
         WeatherModel weatherModel =
             await weatherRep.getCityWeather(event._city);
+
         print("after  the bloc");
         print(weatherModel.current.weather[0].main);
         yield WeatherLoadedCorrectely(weatherModel);

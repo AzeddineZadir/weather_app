@@ -1,7 +1,9 @@
 part of 'weather_bloc.dart';
 
 @immutable
-abstract class WeatherState {}
+abstract class WeatherState {
+  String city = "";
+}
 
 class WeatherInitial extends WeatherState {}
 
